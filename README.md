@@ -87,5 +87,67 @@ Exemplo:
 
 ```c
 permissoes = permissoes & ~PERMISSAO_ESCRITA;
-// O operador ~ inverte os bits de PERMISSAO_ESCRITA, resultando em 1111 & NOT(0010) = 1101 para que & remova a permissão de escrita.
+// O operador ~ inverte os bits de PERMISSAO_ESCRITA,
+// resultando em 1111 & NOT(0010) = 1101
+// para que & remova a permissão de escrita.
 ```
+
+> ## Extração de Bits - Exercício 2
+Neste exercício, vamos demonstrar como extrair bits específicos de um número usando operadores bitwise.
+
+## Função extract_bits
+A função extract_bits extrai uma quantidade específica de bits de um número, começando de uma posição definida:
+
+```c
+unsigned int extract_bits(unsigned int number, int position, int width)
+{
+    unsigned int mask = (1 << width) - 1;
+    return (number >> position) & mask;
+}
+```
+
+Vamos usar a função extract_bits para extrair bits de um número.
+Suponha que queremos extrair 3 bits do número 0b11010110, começando da posição 2 (onde a posição 0 é o bit menos significativo).
+
+Exemplo
+```
+unsigned int number = 0b11010110; 
+int position = 2;
+int width = 3;
+
+unsigned int extracted_bits = extract_bits(number, position, width);
+```
+
+### Passo 1: Criar a Máscara
+A máscara é criada para selecionar apenas a quantidade de bits que queremos extrair.
+
+```
+unsigned int mask = (1 << width) - 1;
+```
+1 << width desloca o bit 1 para a esquerda por width posições.
+Para width = 3, isso resulta em 0b1000.
+Subtraindo 1, obtemos 0b0111.
+Então, mask é 0b0111.
+
+### Passo 2: Deslocar o Número
+Deslocamos o número para a direita por position bits para alinhar os bits desejados à direita.
+
+```
+return (number >> position) & mask;
+```
+number >> position desloca number para a direita por position bits. Para position = 2, isso resulta em 0b00110101.
+
+### Passo 3: Aplicar a Máscara
+Aplicamos a máscara para selecionar apenas os bits desejados.
+```
+(number >> position) & mask realiza a operação bitwise AND entre 0b00110101 e 0b0111.
+```
+Resultado da operação AND:
+
+```
+  00110101
+& 00000111
+  --------
+  00000101
+```
+Então, o valor de extracted_bits é 0b101. Conseguimos extrair os bits de acordo com a posição!
