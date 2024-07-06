@@ -1,8 +1,8 @@
 # Operadores Bitwise em C
 
-Este README explica os operadores bitwise utilizados no arquivo C fornecido. O código define permissões usando operadores bitwise para manipulação de bits. 
+Este README explica os operadores bitwise utilizados nos exercícios 1 e 2 do Trabalho Final da disciplina de Programação de Software Básico.
 
-## Definições de Permissões
+> ## Definições de Permissões - Exercício 1
 
 As permissões são definidas usando macros e valores hexadecimais:
 
@@ -12,14 +12,15 @@ As permissões são definidas usando macros e valores hexadecimais:
 #define PERMISSAO_ADMIN 0x04   // 0100
 ```
 
-PERMISSAO_LEITURA é representada pelo bit menos significativo (0001).
-PERMISSAO_ESCRITA é representada pelo segundo bit menos significativo (0010).
-PERMISSAO_ADMIN é representada pelo terceiro bit menos significativo (0100).
-Função mostrar_permissoes
+- PERMISSAO_LEITURA é representada pelo bit menos significativo (0001).
+- PERMISSAO_ESCRITA é representada pelo segundo bit menos significativo (0010).
+- PERMISSAO_ADMIN é representada pelo terceiro bit menos significativo (0100).
+
+## Função mostrar_permissoes
+
 A função mostrar_permissoes exibe as permissões configuradas:
 
-c
-Copiar código
+```c
 void mostrar_permissoes(int permissoes)
 {
   printf("--------------------\n");
@@ -43,81 +44,48 @@ void mostrar_permissoes(int permissoes)
   printf("\n");
   printf("--------------------\n");
 }
-Operadores Bitwise Usados
-& (AND)
-Este operador é usado para verificar se uma permissão específica está definida:
+```
+## Operadores Bitwise Usados
+### & (AND)
 
-c
-Copiar código
+Este operador é usado para verificar se uma permissão específica está definida.
+Exemplo:
+```
+#define PERMISSAO_LEITURA 0x01 // 0001
+
+// Esse if será recusado pois 0010 & 0001 = 0000
+// Assim, percebemos que nesse caso, esse usuário não tem permissão de Leitura
+int permissoes = 0b0010
 if (permissoes & PERMISSAO_LEITURA)
 {
   printf("Leitura ");
 }
-| (OR)
+
+// Esse if vai passar pois 0011 & 0001 = 0001
+// Assim, percebemos que nesse caso, esse usuário tem permissão de Leitura
+int permissoes = 0b0011;
+if (permissoes & PERMISSAO_LEITURA)
+{
+  printf("Leitura ");
+}
+```
+
+## | (OR)
 Este operador é usado para adicionar permissões:
+Exemplo:
 
-c
-Copiar código
+```c
+int permissoes = 0b0000;
+// 0000 | 0001 = 0001, logo a permissão foi adicionada
 permissoes = permissoes | PERMISSAO_LEITURA;
+// 0001 | 0011 = 0011, logo a permissão de escrita foi adicionada
 permissoes = permissoes | PERMISSAO_ESCRITA;
-~ (NOT)
+```
+## ~ (NOT)
 Este operador é usado em combinação com & para remover permissões:
+Exemplo:
 
-c
-Copiar código
+```c
 permissoes = permissoes & ~PERMISSAO_ESCRITA;
-O operador ~ inverte os bits de PERMISSAO_ESCRITA, resultando em 1111 1101 para que & remova a permissão de escrita.
-
-Fluxo do Programa
-Inicialmente, permissoes é definido como 0 (nenhuma permissão).
-
-Adiciona permissões de leitura e escrita:
-
-c
-Copiar código
-permissoes = permissoes | PERMISSAO_LEITURA;
-permissoes = permissoes | PERMISSAO_ESCRITA;
-Exibe as permissões atuais usando mostrar_permissoes.
-
-Remove a permissão de escrita:
-
-c
-Copiar código
-permissoes = permissoes & ~PERMISSAO_ESCRITA;
-Exibe novamente as permissões atuais usando mostrar_permissoes.
-
-Verifica se a permissão de administrador está definida:
-
-c
-Copiar código
-if (permissoes & PERMISSAO_ADMIN)
-{
-  printf("A permissao de ADMINISTRADOR esta definida.\n");
-}
-else
-{
-  printf("A permissao de ADMINISTRADOR NAO esta definida.\n");
-}
-Compilação e Execução
-Para compilar e executar o programa, use os seguintes comandos no terminal:
-
-sh
-Copiar código
-gcc -o permissoes permissoes.c
-./permissoes
-Saída Esperada
-A saída do programa será semelhante a:
-
-markdown
-Copiar código
-Adicionando permissoes... 
-Depois de adicionar permissoes de leitura e escrita:
---------------------
-Permissoes: Leitura Escrita 
---------------------
-Removendo a permissao de escrita
-Apos remover a permissao de escrita:
---------------------
-Permissoes: Leitura 
---------------------
-A permissao de ADMINISTRADOR NAO esta definida.
+// O operador ~ inverte os bits de PERMISSAO_ESCRITA, resultando em 1111 & NOT(0010) = 1101 para que & remova a permissão de escrita.
+```
