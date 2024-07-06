@@ -1,6 +1,5 @@
 #include <stdio.h>
 // peguei o código para printar binários do Stack Overflow -> https://stackoverflow.com/questions/111928/is-there-a-printf-converter-to-print-in-binary-format
-// Assumes little endian
 void printBits(void const *const ptr)
 {
     unsigned char *b = (unsigned char *)ptr;
